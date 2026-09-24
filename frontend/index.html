@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EasyFood</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Cabeçalho -->
+    <header class="topo">
+
+        <div class="logo">
+            🍔 EasyFood
+        </div>
+
+        <nav>
+            <a href="#inicio">Início</a>
+            <a href="#restaurantes">Restaurantes</a>
+            <a href="#cadastro">Cadastrar</a>
+        </nav>
+
+    </header>
+
+
+    <!-- Conteúdo principal -->
+    <main>
+
+        <!-- Apresentação -->
+        <section id="inicio" class="hero">
+
+            <div class="hero-texto">
+
+                <span class="tag">🍴 Comida perto de você</span>
+
+                <h1>
+                    Encontre seu próximo
+                    <span>prato favorito!</span>
+                </h1>
+
+                <p>
+                    Descubra restaurantes, veja avaliações
+                    e encontre opções deliciosas no EasyFood.
+                </p>
+
+                <!-- Pesquisa -->
+                <div class="barra-pesquisa">
+
+                    <span>🔎</span>
+
+                    <input
+                        type="text"
+                        id="pesquisa"
+                        placeholder="Buscar restaurante..."
+                    >
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Categorias -->
+        <section class="categorias">
+
+            <div class="titulo-secao">
+
+                <h2>O que você quer comer?</h2>
+
+                <p>
+                    Escolha uma categoria
+                </p>
+
+            </div>
+
+
+            <div class="categorias-lista">
+
+                <button
+                    class="categoria"
+                    data-categoria="Pizza"
+                    type="button"
+                >
+                    <span>🍕</span>
+                    <strong>Pizza</strong>
+                </button>
+
+
+                <button
+                    class="categoria"
+                    data-categoria="Hambúrguer"
+                    type="button"
+                >
+                    <span>🍔</span>
+                    <strong>Hambúrguer</strong>
+                </button>
+
+
+                <button
+                    class="categoria"
+                    data-categoria="Japonesa"
+                    type="button"
+                >
+                    <span>🍣</span>
+                    <strong>Japonesa</strong>
+                </button>
+
+
+                <button
+                    class="categoria"
+                    data-categoria="Açaí"
+                    type="button"
+                >
+                    <span>🍧</span>
+                    <strong>Açaí</strong>
+                </button>
+
+
+                <button
+                    class="categoria"
+                    data-categoria="Sobremesa"
+                    type="button"
+                >
+                    <span>🍰</span>
+                    <strong>Sobremesa</strong>
+                </button>
+
+
+                <button
+                    class="categoria"
+                    data-categoria="Bebidas"
+                    type="button"
+                >
+                    <span>🥤</span>
+                    <strong>Bebidas</strong>
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- Restaurantes -->
+        <section
+            id="restaurantes"
+            class="restaurantes"
+        >
+
+            <div class="titulo-secao restaurantes-titulo">
+
+                <div>
+
+                    <h2>
+                        Restaurantes
+                    </h2>
+
+                    <p>
+                        Encontre lugares para matar a fome 🍴
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="mostrarTodos"
+                    type="button"
+                >
+                    Ver todos
+                </button>
+
+            </div>
+
+
+            <!--
+                Os cards dos restaurantes
+                serão criados pelo script.js
+            -->
+            <div
+                id="listaRestaurantes"
+                class="grid-restaurantes"
+            >
+
+                <p class="carregando">
+                    Carregando restaurantes...
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- Cadastro -->
+        <section
+            id="cadastro"
+            class="cadastro"
+        >
+
+            <div class="titulo-secao">
+
+                <h2>
+                    Cadastrar restaurante
+                </h2>
+
+                <p>
+                    Adicione um novo restaurante ao EasyFood.
+                </p>
+
+            </div>
+
+
+            <form id="formRestaurante">
+
+                <div class="campo">
+
+                    <label for="nome">
+                        Nome do restaurante
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nome"
+                        placeholder="Ex: Pizzaria do Joao"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="categoria">
+                        Categoria
+                    </label>
+
+                    <input
+                        type="text"
+                        id="categoria"
+                        placeholder="Ex: Pizza"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="avaliacao">
+                        Avaliação
+                    </label>
+
+                    <input
+                        type="number"
+                        id="avaliacao"
+                        placeholder="0 a 5"
+                        min="0"
+                        max="5"
+                        step="0.1"
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="botao-cadastrar"
+                >
+                    + Cadastrar restaurante
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <!-- ==========================================
+         MODAL DE EDIÇÃO
+    =========================================== -->
+
+    <div
+        id="modalEdicao"
+        class="modal"
+    >
+
+        <div class="modal-conteudo">
+
+            <!-- Botão para fechar -->
+            <button
+                id="fecharModal"
+                class="fechar-modal"
+                type="button"
+            >
+                ×
+            </button>
+
+
+            <h2>
+                ✏️ Editar restaurante
+            </h2>
+
+
+            <p>
+                Altere as informações do restaurante.
+            </p>
+
+
+            <form id="formEdicao">
+
+                <!-- Nome -->
+                <div class="campo">
+
+                    <label for="editarNome">
+                        Nome do restaurante
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editarNome"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Categoria -->
+                <div class="campo">
+
+                    <label for="editarCategoria">
+                        Categoria
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editarCategoria"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Avaliação -->
+                <div class="campo">
+
+                    <label for="editarAvaliacao">
+                        Avaliação
+                    </label>
+
+                    <input
+                        type="number"
+                        id="editarAvaliacao"
+                        min="0"
+                        max="5"
+                        step="0.1"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Botões -->
+                <div class="botoes-modal">
+
+                    <button
+                        type="button"
+                        id="cancelarEdicao"
+                        class="botao-cancelar"
+                    >
+                        Cancelar
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="botao-salvar"
+                    >
+                        💾 Salvar alterações
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- Rodapé -->
+    <footer>
+
+        <strong>
+            🍔 EasyFood
+        </strong>
+
+        <p>
+            Encontre seu próximo sabor favorito.
+        </p>
+
+        <small>
+            Projeto acadêmico
+        </small>
+
+    </footer>
+
+
+    <!-- JavaScript principal -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>.

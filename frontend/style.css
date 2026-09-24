@@ -1,0 +1,707 @@
+/* ==============================
+   CONFIGURAÇÕES GERAIS
+================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f7f7f7;
+    color: #333;
+}
+
+
+/* ==============================
+   CABEÇALHO
+================================= */
+
+.topo {
+    width: 100%;
+    background: white;
+    padding: 18px 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: #ff5a36;
+}
+
+nav {
+    display: flex;
+    gap: 25px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #444;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #ff5a36;
+}
+
+
+/* ==============================
+   ÁREA PRINCIPAL
+================================= */
+
+main {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+
+/* ==============================
+   HERO
+================================= */
+
+.hero {
+    margin-top: 30px;
+    min-height: 350px;
+    border-radius: 20px;
+    padding: 60px;
+    display: flex;
+    align-items: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff6b35,
+            #ff8c42
+        );
+
+    color: white;
+}
+
+.hero-texto {
+    max-width: 650px;
+}
+
+.tag {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-size: 48px;
+    line-height: 1.1;
+    margin-bottom: 20px;
+}
+
+.hero h1 span {
+    display: block;
+}
+
+.hero p {
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+}
+
+
+/* ==============================
+   BARRA DE PESQUISA
+================================= */
+
+.barra-pesquisa {
+    background: white;
+    border-radius: 12px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 500px;
+}
+
+.barra-pesquisa span {
+    font-size: 20px;
+}
+
+.barra-pesquisa input {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
+
+
+/* ==============================
+   TÍTULOS
+================================= */
+
+.titulo-secao {
+    margin-bottom: 25px;
+}
+
+.titulo-secao h2 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.titulo-secao p {
+    color: #777;
+}
+
+
+/* ==============================
+   CATEGORIAS
+================================= */
+
+.categorias {
+    padding: 45px 0 20px;
+}
+
+.categorias-lista {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 15px;
+}
+
+.categoria {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 15px;
+    padding: 20px 10px;
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    transition: 0.2s;
+}
+
+.categoria span {
+    font-size: 35px;
+}
+
+.categoria strong {
+    color: #444;
+}
+
+.categoria:hover {
+    transform: translateY(-4px);
+    border-color: #ff6b35;
+}
+
+
+/* ==============================
+   RESTAURANTES
+================================= */
+
+.restaurantes {
+    padding: 35px 0;
+}
+
+.restaurantes-titulo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#mostrarTodos {
+    border: none;
+    background: transparent;
+    color: #ff5a36;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+#mostrarTodos:hover {
+    text-decoration: underline;
+}
+
+
+/* ==============================
+   GRID DOS RESTAURANTES
+================================= */
+
+.grid-restaurantes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+
+/* ==============================
+   CARD DO RESTAURANTE
+================================= */
+
+.card-restaurante {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid #eee;
+
+    transition: 0.25s;
+
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+}
+
+.card-restaurante:hover {
+    transform: translateY(-6px);
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.10);
+}
+
+
+/* ==============================
+   IMAGEM / EMOJI DO RESTAURANTE
+================================= */
+
+.card-imagem {
+    height: 160px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff0e8,
+            #fff8f3
+        );
+
+    overflow: hidden;
+}
+
+.emoji-restaurante {
+    font-size: 70px;
+    transition: 0.25s;
+}
+
+.card-restaurante:hover .emoji-restaurante {
+    transform: scale(1.12);
+}
+
+
+/* ==============================
+   CONTEÚDO DO CARD
+================================= */
+
+.card-conteudo {
+    padding: 20px;
+}
+
+.card-conteudo h3 {
+    font-size: 21px;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.card-categoria {
+    color: #777;
+    margin-bottom: 12px;
+    font-size: 15px;
+}
+
+
+/* ==============================
+   AVALIAÇÃO
+================================= */
+
+.card-avaliacao {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    margin-bottom: 18px;
+
+    font-size: 15px;
+}
+
+.card-avaliacao strong {
+    color: #333;
+}
+
+.avaliacao-texto {
+    color: #999;
+    font-size: 13px;
+}
+
+
+/* ==============================
+   BOTÃO EXCLUIR
+================================= */
+
+.botao-excluir {
+    width: 100%;
+
+    padding: 11px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #ff6b35;
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    transition: 0.2s;
+}
+
+.botao-excluir:hover {
+    background: #e95425;
+}
+
+
+/* ==============================
+   CADASTRO
+================================= */
+
+.cadastro {
+    background: white;
+    padding: 30px;
+    margin: 30px 0 50px;
+
+    border-radius: 18px;
+    border: 1px solid #eee;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.campo label {
+    font-weight: bold;
+}
+
+.campo input {
+    padding: 13px;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+
+    font-size: 15px;
+    outline: none;
+}
+
+.campo input:focus {
+    border-color: #ff6b35;
+}
+
+.botao-cadastrar {
+    grid-column: 1 / -1;
+
+    padding: 14px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #ff6b35;
+    color: white;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.botao-cadastrar:hover {
+    background: #e95425;
+}
+
+
+/* ==============================
+   MENSAGENS
+================================= */
+
+.carregando {
+    color: #777;
+}
+
+.mensagem-vazia {
+    grid-column: 1 / -1;
+
+    text-align: center;
+    padding: 40px;
+
+    background: white;
+    border-radius: 15px;
+
+    color: #777;
+}
+
+
+/* ==============================
+   RODAPÉ
+================================= */
+
+footer {
+    text-align: center;
+    background: #222;
+    color: white;
+    padding: 35px 20px;
+}
+
+footer strong {
+    color: #ff6b35;
+    font-size: 22px;
+}
+
+footer p {
+    margin: 10px 0;
+    color: #ccc;
+}
+
+footer small {
+    color: #888;
+}
+
+
+/* ==============================
+   RESPONSIVIDADE
+================================= */
+
+/* Tablet */
+
+@media (max-width: 900px) {
+
+    .categorias-lista {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-restaurantes {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    form {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+
+/* Celular */
+
+@media (max-width: 600px) {
+
+    .topo {
+        padding: 15px 5%;
+    }
+
+    nav {
+        display: none;
+    }
+
+    main {
+        width: 92%;
+    }
+
+    .hero {
+        padding: 35px 25px;
+        min-height: 330px;
+    }
+
+    .hero h1 {
+        font-size: 34px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .categorias-lista {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-restaurantes {
+        grid-template-columns: 1fr;
+    }
+
+    .restaurantes-titulo {
+        align-items: flex-start;
+    }
+
+    form {
+        grid-template-columns: 1fr;
+    }
+
+    .botao-cadastrar {
+        grid-column: auto;
+    }
+}
+
+/* ==============================
+   MODAL DE EDIÇÃO
+================================= */
+
+.modal {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.55);
+
+    z-index: 1000;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+}
+
+.modal.aberto {
+    display: flex;
+}
+
+.modal-conteudo {
+    width: 100%;
+    max-width: 500px;
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 30px;
+
+    position: relative;
+
+    box-shadow:
+        0 20px 50px
+        rgba(0, 0, 0, 0.25);
+}
+
+.modal-conteudo h2 {
+    margin-bottom: 8px;
+
+    color: #333;
+}
+
+.modal-conteudo > p {
+    color: #777;
+
+    margin-bottom: 25px;
+}
+
+.fechar-modal {
+    position: absolute;
+
+    top: 15px;
+    right: 18px;
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 30px;
+
+    color: #777;
+
+    cursor: pointer;
+}
+
+.fechar-modal:hover {
+    color: #ff5a36;
+}
+
+#formEdicao {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+.botoes-modal {
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 10px;
+}
+
+.botao-cancelar,
+.botao-salvar {
+    flex: 1;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+    font-size: 14px;
+}
+
+.botao-cancelar {
+    background: #eee;
+
+    color: #555;
+}
+
+.botao-cancelar:hover {
+    background: #ddd;
+}
+
+.botao-salvar {
+    background: #ff6b35;
+
+    color: white;
+}
+
+.botao-salvar:hover {
+    background: #e95425;
+}
+
+/* ==============================
+   MODAL NO CELULAR
+================================= */
+
+@media (max-width: 600px) {
+
+    .modal {
+        padding: 15px;
+    }
+
+    .modal-conteudo {
+        padding: 25px 20px;
+    }
+
+    .botoes-modal {
+        flex-direction: column;
+    }
+
+}
