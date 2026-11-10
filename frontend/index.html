@@ -1,24 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>EasyFood</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-    <!-- Cabeçalho -->
     <header class="topo">
-
-        <div class="logo">
-            🍔 EasyFood
-        </div>
+        <div class="logo">🍔 EasyFood</div>
 
         <nav>
             <a href="#inicio">Início</a>
@@ -26,172 +17,74 @@
             <a href="#cadastro">Cadastrar</a>
         </nav>
 
-        <!-- Área do usuário -->
         <div id="areaUsuario" hidden>
             <span id="nomeUsuario"></span>
-
-            <button type="button" id="botaoSair">
-                Sair
-            </button>
+            <button type="button" id="botaoSair">Sair</button>
         </div>
-
     </header>
 
-
-    <!-- ========================================== -->
-    <!-- AUTENTICAÇÃO -->
-    <!-- ========================================== -->
-
-    <section id="areaAutenticacao" class="cadastro">
-
+    <section id="areaAutenticacao" class="autenticacao">
         <div class="titulo-secao">
-
-            <h2 id="tituloAutenticacao">
-                Entrar no EasyFood
-            </h2>
-
+            <h2 id="tituloAutenticacao">Entrar no EasyFood</h2>
             <p id="mensagemAutenticacao">
                 Entre na sua conta para acessar os restaurantes.
             </p>
-
         </div>
 
-
-        <!-- Formulário de login -->
         <form id="formLogin">
-
             <div class="campo">
-
-                <label for="emailLogin">
-                    E-mail
-                </label>
-
-                <input
-                    type="email"
-                    id="emailLogin"
-                    placeholder="Digite seu e-mail"
-                    required
-                >
-
+                <label for="emailLogin">E-mail</label>
+                <input type="email" id="emailLogin"
+                    placeholder="Digite seu e-mail" required>
             </div>
 
-
             <div class="campo">
-
-                <label for="senhaLogin">
-                    Senha
-                </label>
-
-                <input
-                    type="password"
-                    id="senhaLogin"
-                    placeholder="Digite sua senha"
-                    required
-                >
-
+                <label for="senhaLogin">Senha</label>
+                <input type="password" id="senhaLogin"
+                    placeholder="Digite sua senha" required>
             </div>
 
-
-            <button type="submit" class="botao-cadastrar">
-                Entrar
-            </button>
-
+            <button type="submit" class="botao-cadastrar">Entrar</button>
         </form>
 
-
-        <!-- Formulário de cadastro de usuário -->
         <form id="formCadastroUsuario" hidden>
-
             <div class="campo">
-
-                <label for="nomeUsuarioCadastro">
-                    Nome
-                </label>
-
-                <input
-                    type="text"
-                    id="nomeUsuarioCadastro"
-                    placeholder="Digite seu nome"
-                    required
-                >
-
+                <label for="nomeUsuarioCadastro">Nome</label>
+                <input type="text" id="nomeUsuarioCadastro"
+                    placeholder="Digite seu nome" required>
             </div>
 
-
             <div class="campo">
-
-                <label for="emailCadastro">
-                    E-mail
-                </label>
-
-                <input
-                    type="email"
-                    id="emailCadastro"
-                    placeholder="Digite seu e-mail"
-                    required
-                >
-
+                <label for="emailCadastro">E-mail</label>
+                <input type="email" id="emailCadastro"
+                    placeholder="Digite seu e-mail" required>
             </div>
 
-
             <div class="campo">
-
-                <label for="senhaCadastro">
-                    Senha
-                </label>
-
-                <input
-                    type="password"
-                    id="senhaCadastro"
+                <label for="senhaCadastro">Senha</label>
+                <input type="password" id="senhaCadastro"
                     placeholder="Mínimo de 8 caracteres"
-                    minlength="8"
-                    required
-                >
-
+                    minlength="8" required>
             </div>
-
 
             <button type="submit" class="botao-cadastrar">
                 Criar conta
             </button>
-
         </form>
 
-
-        <!-- Alternar login e cadastro -->
-        <p>
-
-            <span id="textoAlternativo">
-                Ainda não tem uma conta?
-            </span>
-
-            <button
-                type="button"
-                id="alternarAutenticacao"
-            >
+        <p class="alternar-conta">
+            <span id="textoAlternativo">Ainda não tem uma conta?</span>
+            <button type="button" id="alternarAutenticacao">
                 Criar conta
             </button>
-
         </p>
-
     </section>
-
-
-    <!-- ========================================== -->
-    <!-- CONTEÚDO PROTEGIDO -->
-    <!-- ========================================== -->
 
     <main id="conteudoProtegido" hidden>
 
-
-        <!-- Apresentação -->
         <section id="inicio" class="hero">
-
             <div class="hero-texto">
-
-                <span class="tag">
-                    🍴 Comida perto de você
-                </span>
+                <span class="tag">🍴 Comida perto de você</span>
 
                 <h1>
                     Encontre seu próximo
@@ -199,375 +92,212 @@
                 </h1>
 
                 <p>
-                    Descubra restaurantes, veja avaliações
-                    e encontre opções deliciosas no EasyFood.
+                    Descubra restaurantes, veja avaliações e encontre
+                    opções deliciosas no EasyFood.
                 </p>
 
-
-                <!-- Pesquisa -->
                 <div class="barra-pesquisa">
-
                     <span>🔎</span>
-
-                    <input
-                        type="text"
-                        id="pesquisa"
-                        placeholder="Buscar restaurante..."
-                    >
-
+                    <input type="text" id="pesquisa"
+                        placeholder="Buscar restaurante...">
                 </div>
-
             </div>
-
         </section>
 
-
-        <!-- Categorias -->
         <section class="categorias">
-
             <div class="titulo-secao">
-
-                <h2>
-                    O que você quer comer?
-                </h2>
-
-                <p>
-                    Escolha uma categoria
-                </p>
-
+                <h2>O que você quer comer?</h2>
+                <p>Escolha uma categoria</p>
             </div>
-
 
             <div class="categorias-lista">
-
-                <button
-                    class="categoria"
-                    data-categoria="Pizza"
-                    type="button"
-                >
-                    <span>🍕</span>
-                    <strong>Pizza</strong>
+                <button class="categoria" data-categoria="Pizza" type="button">
+                    <span>🍕</span><strong>Pizza</strong>
                 </button>
 
-
-                <button
-                    class="categoria"
-                    data-categoria="Hambúrguer"
-                    type="button"
-                >
-                    <span>🍔</span>
-                    <strong>Hambúrguer</strong>
+                <button class="categoria" data-categoria="Hambúrguer" type="button">
+                    <span>🍔</span><strong>Hambúrguer</strong>
                 </button>
 
-
-                <button
-                    class="categoria"
-                    data-categoria="Japonesa"
-                    type="button"
-                >
-                    <span>🍣</span>
-                    <strong>Japonesa</strong>
+                <button class="categoria" data-categoria="Japonesa" type="button">
+                    <span>🍣</span><strong>Japonesa</strong>
                 </button>
 
-
-                <button
-                    class="categoria"
-                    data-categoria="Açaí"
-                    type="button"
-                >
-                    <span>🍧</span>
-                    <strong>Açaí</strong>
+                <button class="categoria" data-categoria="Açaí" type="button">
+                    <span>🍧</span><strong>Açaí</strong>
                 </button>
 
-
-                <button
-                    class="categoria"
-                    data-categoria="Sobremesa"
-                    type="button"
-                >
-                    <span>🍰</span>
-                    <strong>Sobremesa</strong>
+                <button class="categoria" data-categoria="Sobremesa" type="button">
+                    <span>🍰</span><strong>Sobremesa</strong>
                 </button>
 
-
-                <button
-                    class="categoria"
-                    data-categoria="Bebidas"
-                    type="button"
-                >
-                    <span>🥤</span>
-                    <strong>Bebidas</strong>
+                <button class="categoria" data-categoria="Bebidas" type="button">
+                    <span>🥤</span><strong>Bebidas</strong>
                 </button>
-
             </div>
-
         </section>
 
-
-        <!-- Restaurantes -->
-        <section
-            id="restaurantes"
-            class="restaurantes"
-        >
-
+        <section id="restaurantes" class="restaurantes">
             <div class="titulo-secao restaurantes-titulo">
-
                 <div>
-
-                    <h2>
-                        Restaurantes
-                    </h2>
-
-                    <p>
-                        Encontre lugares para matar a fome 🍴
-                    </p>
-
+                    <h2>Restaurantes</h2>
+                    <p>Encontre lugares para matar a fome 🍴</p>
                 </div>
 
-
-                <button
-                    id="mostrarTodos"
-                    type="button"
-                >
+                <button id="mostrarTodos" type="button">
                     Ver todos
                 </button>
-
             </div>
 
-
-            <!-- Cards dos restaurantes -->
-            <div
-                id="listaRestaurantes"
-                class="grid-restaurantes"
-            >
-
-                <p class="carregando">
-                    Carregando restaurantes...
-                </p>
-
+            <div id="listaRestaurantes" class="grid-restaurantes">
+                <p class="carregando">Carregando restaurantes...</p>
             </div>
-
         </section>
 
-
-        <!-- Cadastro de restaurantes -->
-        <section
-            id="cadastro"
-            class="cadastro"
-        >
-
+        <section id="cadastro" class="cadastro">
             <div class="titulo-secao">
-
-                <h2>
-                    Cadastrar restaurante
-                </h2>
-
-                <p>
-                    Adicione um novo restaurante ao EasyFood.
-                </p>
-
+                <h2>Cadastrar restaurante</h2>
+                <p>Adicione um novo restaurante ao EasyFood.</p>
             </div>
 
-
             <form id="formRestaurante">
-
                 <div class="campo">
-
-                    <label for="nome">
-                        Nome do restaurante
-                    </label>
-
-                    <input
-                        type="text"
-                        id="nome"
-                        placeholder="Ex: Pizzaria do Joao"
-                        required
-                    >
-
+                    <label for="nome">Nome do restaurante</label>
+                    <input type="text" id="nome"
+                        placeholder="Ex: Pizzaria do João" required>
                 </div>
 
-
                 <div class="campo">
-
-                    <label for="categoria">
-                        Categoria
-                    </label>
-
-                    <input
-                        type="text"
-                        id="categoria"
-                        placeholder="Ex: Pizza"
-                        required
-                    >
-
+                    <label for="categoria">Categoria</label>
+                    <input type="text" id="categoria"
+                        placeholder="Ex: Pizza" required>
                 </div>
 
-
                 <div class="campo">
-
-                    <label for="avaliacao">
-                        Avaliação
-                    </label>
-
-                    <input
-                        type="number"
-                        id="avaliacao"
-                        placeholder="0 a 5"
-                        min="0"
-                        max="5"
-                        step="0.1"
-                    >
-
+                    <label for="avaliacao">Avaliação</label>
+                    <input type="number" id="avaliacao"
+                        placeholder="0 a 5" min="0" max="5" step="0.1">
                 </div>
 
+                <div class="campo">
+                    <label for="imagemRestaurante">Link da imagem</label>
+                    <input type="url" id="imagemRestaurante"
+                        placeholder="https://exemplo.com/imagem.jpg">
+                </div>
 
-                <button
-                    type="submit"
-                    class="botao-cadastrar"
-                >
+                <button type="submit" class="botao-cadastrar">
                     + Cadastrar restaurante
                 </button>
-
             </form>
-
         </section>
 
     </main>
 
-
-    <!-- ========================================== -->
     <!-- MODAL DE EDIÇÃO -->
-    <!-- ========================================== -->
-
-    <div
-        id="modalEdicao"
-        class="modal"
-    >
-
+    <div id="modalEdicao" class="modal">
         <div class="modal-conteudo">
+            <button id="fecharModal" class="fechar-modal" type="button">×</button>
 
-            <!-- Botão para fechar -->
-            <button
-                id="fecharModal"
-                class="fechar-modal"
-                type="button"
-            >
-                ×
-            </button>
-
-
-            <h2>
-                ✏️ Editar restaurante
-            </h2>
-
-
-            <p>
-                Altere as informações do restaurante.
-            </p>
-
+            <h2>✏️ Editar restaurante</h2>
+            <p>Altere as informações do restaurante.</p>
 
             <form id="formEdicao">
-
-                <!-- Nome -->
                 <div class="campo">
-
-                    <label for="editarNome">
-                        Nome do restaurante
-                    </label>
-
-                    <input
-                        type="text"
-                        id="editarNome"
-                        required
-                    >
-
+                    <label for="editarNome">Nome do restaurante</label>
+                    <input type="text" id="editarNome" required>
                 </div>
 
-
-                <!-- Categoria -->
                 <div class="campo">
-
-                    <label for="editarCategoria">
-                        Categoria
-                    </label>
-
-                    <input
-                        type="text"
-                        id="editarCategoria"
-                        required
-                    >
-
+                    <label for="editarCategoria">Categoria</label>
+                    <input type="text" id="editarCategoria" required>
                 </div>
 
-
-                <!-- Avaliação -->
                 <div class="campo">
-
-                    <label for="editarAvaliacao">
-                        Avaliação
-                    </label>
-
-                    <input
-                        type="number"
-                        id="editarAvaliacao"
-                        min="0"
-                        max="5"
-                        step="0.1"
-                        required
-                    >
-
+                    <label for="editarAvaliacao">Avaliação</label>
+                    <input type="number" id="editarAvaliacao"
+                        min="0" max="5" step="0.1" required>
                 </div>
 
+                <div class="campo">
+                    <label for="editarImagemRestaurante">Link da imagem</label>
+                    <input type="url" id="editarImagemRestaurante"
+                        placeholder="https://exemplo.com/imagem.jpg">
+                </div>
 
-                <!-- Botões -->
                 <div class="botoes-modal">
+                    <button type="button" id="cancelarEdicao"
+                        class="botao-cancelar">Cancelar</button>
 
-                    <button
-                        type="button"
-                        id="cancelarEdicao"
-                        class="botao-cancelar"
-                    >
-                        Cancelar
-                    </button>
-
-
-                    <button
-                        type="submit"
-                        class="botao-salvar"
-                    >
+                    <button type="submit" class="botao-salvar">
                         💾 Salvar alterações
                     </button>
-
                 </div>
-
             </form>
-
         </div>
-
     </div>
 
+    <!-- MODAL DO CARDÁPIO -->
+    <div id="modalCardapio" class="modal">
+        <div class="modal-conteudo modal-cardapio">
+            <button id="fecharCardapio" class="fechar-modal" type="button">×</button>
 
-    <!-- Rodapé -->
+            <h2 id="tituloCardapio">🍽️ Cardápio</h2>
+            <p id="nomeRestauranteCardapio">
+                Itens disponíveis neste restaurante.
+            </p>
+
+            <form id="formCardapio">
+                <div class="campo">
+                    <label for="nomeItem">Nome do produto</label>
+                    <input type="text" id="nomeItem"
+                        placeholder="Ex: X-Burger" required>
+                </div>
+
+                <div class="campo">
+                    <label for="descricaoItem">Descrição</label>
+                    <input type="text" id="descricaoItem"
+                        placeholder="Descrição do produto">
+                </div>
+
+                <div class="campo">
+                    <label for="precoItem">Preço (R$)</label>
+                    <input type="number" id="precoItem"
+                        min="0" step="0.01" placeholder="22.90" required>
+                </div>
+
+                <div class="campo">
+                    <label for="categoriaItem">Categoria</label>
+                    <input type="text" id="categoriaItem"
+                        placeholder="Ex: Lanches">
+                </div>
+
+                <div class="campo">
+                    <label for="imagemItem">Link da imagem do produto</label>
+                    <input type="url" id="imagemItem"
+                        placeholder="https://exemplo.com/produto.jpg">
+                </div>
+
+                <button type="submit" class="botao-cadastrar">
+                    + Adicionar ao cardápio
+                </button>
+            </form>
+
+            <hr>
+
+            <h3 class="titulo-produtos">Produtos cadastrados</h3>
+
+            <div id="listaCardapio" class="lista-cardapio">
+                <p>Carregando cardápio...</p>
+            </div>
+        </div>
+    </div>
+
     <footer>
-
-        <strong>
-            🍔 EasyFood
-        </strong>
-
-        <p>
-            Encontre seu próximo sabor favorito.
-        </p>
-
-        <small>
-            Projeto acadêmico
-        </small>
-
+        <strong>🍔 EasyFood</strong>
+        <p>Encontre seu próximo sabor favorito.</p>
+        <small>Projeto acadêmico</small>
     </footer>
 
-
-    <!-- JavaScript principal -->
     <script src="script.js"></script>
-
 </body>
-
 </html>

@@ -1,7 +1,4 @@
-
-/* ==============================
-   CONFIGURAÇÕES GERAIS
-================================= */
+/* CONFIGURAÇÕES GERAIS */
 
 * {
     box-sizing: border-box;
@@ -23,9 +20,7 @@ body {
     display: none !important;
 }
 
-/* ==============================
-   CABEÇALHO
-================================= */
+/* CABEÇALHO */
 
 .topo {
     width: 100%;
@@ -61,10 +56,6 @@ nav a:hover {
     color: #ff5a36;
 }
 
-/* ==============================
-   ÁREA DO USUÁRIO
-================================= */
-
 #areaUsuario {
     display: flex;
     align-items: center;
@@ -84,16 +75,13 @@ nav a:hover {
     color: white;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.2s;
 }
 
 #botaoSair:hover {
     background: #e95425;
 }
 
-/* ==============================
-   AUTENTICAÇÃO
-================================= */
+/* AUTENTICAÇÃO */
 
 #areaAutenticacao {
     width: 90%;
@@ -103,7 +91,7 @@ nav a:hover {
     background: white;
     border: 1px solid #eee;
     border-radius: 18px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 5px 20px rgba(0,0,0,.05);
 }
 
 #areaAutenticacao h1,
@@ -148,13 +136,13 @@ nav a:hover {
     border-radius: 8px;
     font-size: 15px;
     outline: none;
-    transition: 0.2s;
+    transition: .2s;
 }
 
 #formLogin input:focus,
 #formCadastroUsuario input:focus {
     border-color: #ff6b35;
-    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+    box-shadow: 0 0 0 3px rgba(255,107,53,.1);
 }
 
 #formLogin button,
@@ -168,7 +156,6 @@ nav a:hover {
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.2s;
 }
 
 #formLogin button:hover,
@@ -192,17 +179,7 @@ nav a:hover {
     text-decoration: underline;
 }
 
-#mensagemAutenticacao {
-    display: block;
-    margin-top: 15px;
-    text-align: center;
-    color: #d9534f;
-    font-size: 14px;
-}
-
-/* ==============================
-   ÁREA PRINCIPAL
-================================= */
+/* ÁREA PRINCIPAL */
 
 main {
     width: 90%;
@@ -210,9 +187,7 @@ main {
     margin: auto;
 }
 
-/* ==============================
-   HERO
-================================= */
+/* HERO */
 
 .hero {
     margin-top: 30px;
@@ -231,7 +206,7 @@ main {
 
 .tag {
     display: inline-block;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255,255,255,.2);
     padding: 8px 14px;
     border-radius: 20px;
     margin-bottom: 20px;
@@ -253,9 +228,7 @@ main {
     margin-bottom: 30px;
 }
 
-/* ==============================
-   BARRA DE PESQUISA
-================================= */
+/* PESQUISA */
 
 .barra-pesquisa {
     background: white;
@@ -278,9 +251,7 @@ main {
     font-size: 16px;
 }
 
-/* ==============================
-   TÍTULOS
-================================= */
+/* TÍTULOS */
 
 .titulo-secao {
     margin-bottom: 25px;
@@ -295,9 +266,7 @@ main {
     color: #777;
 }
 
-/* ==============================
-   CATEGORIAS
-================================= */
+/* CATEGORIAS */
 
 .categorias {
     padding: 45px 0 20px;
@@ -319,7 +288,7 @@ main {
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    transition: 0.2s;
+    transition: .2s;
 }
 
 .categoria span {
@@ -335,9 +304,12 @@ main {
     border-color: #ff6b35;
 }
 
-/* ==============================
-   RESTAURANTES
-================================= */
+.categoria.ativa {
+    border-color: #ff6b35;
+    background: #fff0e8;
+}
+
+/* RESTAURANTES */
 
 .restaurantes {
     padding: 35px 0;
@@ -362,37 +334,27 @@ main {
     text-decoration: underline;
 }
 
-/* ==============================
-   GRID DOS RESTAURANTES
-================================= */
-
 .grid-restaurantes {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
 }
 
-/* ==============================
-   CARD DO RESTAURANTE
-================================= */
+/* CARDS DOS RESTAURANTES */
 
 .card-restaurante {
     background: white;
     border-radius: 18px;
     overflow: hidden;
     border: 1px solid #eee;
-    transition: 0.25s;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+    transition: .25s;
+    box-shadow: 0 3px 10px rgba(0,0,0,.04);
 }
 
 .card-restaurante:hover {
     transform: translateY(-6px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
+    box-shadow: 0 10px 30px rgba(0,0,0,.10);
 }
-
-/* ==============================
-   IMAGEM / EMOJI DO RESTAURANTE
-================================= */
 
 .card-imagem {
     height: 160px;
@@ -401,20 +363,29 @@ main {
     align-items: center;
     background: linear-gradient(135deg, #fff0e8, #fff8f3);
     overflow: hidden;
+    position: relative;
+}
+
+.card-imagem img,
+.imagem-item-cardapio img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .emoji-restaurante {
     font-size: 70px;
-    transition: 0.25s;
+    transition: .25s;
 }
 
 .card-restaurante:hover .emoji-restaurante {
     transform: scale(1.12);
 }
 
-/* ==============================
-   CONTEÚDO DO CARD
-================================= */
+.card-imagem.imagem-fallback {
+    font-size: 70px;
+}
 
 .card-conteudo {
     padding: 20px;
@@ -431,10 +402,6 @@ main {
     margin-bottom: 12px;
     font-size: 15px;
 }
-
-/* ==============================
-   AVALIAÇÃO
-================================= */
 
 .card-avaliacao {
     display: flex;
@@ -453,52 +420,48 @@ main {
     font-size: 13px;
 }
 
-/* ==============================
-   BOTÃO EXCLUIR
-================================= */
+/* BOTÕES DOS RESTAURANTES */
 
+.botoes-restaurante {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.botao-cardapio,
+.botao-editar,
 .botao-excluir {
     width: 100%;
     padding: 11px;
     border: none;
     border-radius: 9px;
-    background: #ff6b35;
-    color: white;
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
-    transition: 0.2s;
+    transition: .2s;
 }
 
+.botao-cardapio,
+.botao-excluir {
+    background: #ff6b35;
+    color: white;
+}
+
+.botao-cardapio:hover,
 .botao-excluir:hover {
     background: #e95425;
 }
 
-/* ==============================
-   BOTÃO EDITAR
-================================= */
-
 .botao-editar {
-    width: 100%;
-    padding: 11px;
-    margin-bottom: 8px;
-    border: none;
-    border-radius: 9px;
     background: #444;
     color: white;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    transition: 0.2s;
 }
 
 .botao-editar:hover {
     background: #222;
 }
 
-/* ==============================
-   CADASTRO DE RESTAURANTES
-================================= */
+/* CADASTRO DE RESTAURANTE */
 
 .cadastro {
     background: white;
@@ -508,9 +471,9 @@ main {
     border: 1px solid #eee;
 }
 
-form {
+#formRestaurante {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 18px;
 }
 
@@ -525,6 +488,7 @@ form {
 }
 
 .campo input {
+    width: 100%;
     padding: 13px;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -552,9 +516,7 @@ form {
     background: #e95425;
 }
 
-/* ==============================
-   MENSAGENS
-================================= */
+/* MENSAGENS */
 
 .carregando {
     color: #777;
@@ -563,15 +525,269 @@ form {
 .mensagem-vazia {
     grid-column: 1 / -1;
     text-align: center;
-    padding: 40px;
+    padding: 25px;
     background: white;
     border-radius: 15px;
     color: #777;
 }
 
-/* ==============================
-   RODAPÉ
-================================= */
+/* MODAIS */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal.aberto {
+    display: flex;
+}
+
+.modal-conteudo {
+    width: 100%;
+    max-width: 500px;
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0,0,0,.25);
+}
+
+.modal-conteudo h2 {
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.modal-conteudo > p {
+    color: #777;
+    margin-bottom: 25px;
+}
+
+.fechar-modal {
+    position: absolute;
+    top: 15px;
+    right: 18px;
+    border: none;
+    background: transparent;
+    font-size: 30px;
+    color: #777;
+    cursor: pointer;
+}
+
+.fechar-modal:hover {
+    color: #ff5a36;
+}
+
+/* EDIÇÃO */
+
+#formEdicao {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+#formEdicao .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#formEdicao input {
+    padding: 13px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.botoes-modal {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.botao-cancelar,
+.botao-salvar {
+    flex: 1;
+    padding: 13px;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.botao-cancelar {
+    background: #eee;
+    color: #555;
+}
+
+.botao-cancelar:hover {
+    background: #ddd;
+}
+
+.botao-salvar {
+    background: #ff6b35;
+    color: white;
+}
+
+.botao-salvar:hover {
+    background: #e95425;
+}
+
+/* CARDÁPIO */
+
+.modal-cardapio {
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+#formCardapio {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+#formCardapio .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#formCardapio input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+}
+
+#formCardapio input:focus {
+    border-color: #ff6b35;
+    box-shadow: 0 0 0 3px rgba(255,107,53,.1);
+}
+
+#formCardapio button {
+    width: 100%;
+}
+
+.modal-cardapio hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 25px 0;
+}
+
+.modal-cardapio h3 {
+    margin-bottom: 15px;
+}
+
+/* PRODUTOS DO CARDÁPIO */
+
+.lista-cardapio {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.item-cardapio {
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    background: #fffaf7;
+}
+
+.imagem-item-cardapio {
+    width: 100%;
+    height: 180px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #fff0e8, #fff8f3);
+}
+
+.imagem-item-cardapio.imagem-fallback {
+    font-size: 55px;
+}
+
+.item-cardapio h4 {
+    margin-bottom: 7px;
+    font-size: 17px;
+    color: #333;
+}
+
+.item-cardapio p {
+    color: #777;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.item-cardapio strong {
+    display: block;
+    color: #ff5a36;
+    font-size: 17px;
+    margin-top: 10px;
+}
+
+.botoes-item-cardapio {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.botao-editar-item,
+.botao-excluir-item {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 7px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.botao-editar-item {
+    background: #444;
+}
+
+.botao-editar-item:hover {
+    background: #222;
+}
+
+.botao-excluir-item {
+    background: #ff6b35;
+}
+
+.botao-excluir-item:hover {
+    background: #e95425;
+}
+
+.botao-cancelar-item {
+    padding: 12px;
+    border: none;
+    border-radius: 9px;
+    background: #eee;
+    color: #555;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.botao-cancelar-item:hover {
+    background: #ddd;
+}
+
+/* RODAPÉ */
 
 footer {
     text-align: center;
@@ -594,11 +810,7 @@ footer small {
     color: #888;
 }
 
-/* ==============================
-   RESPONSIVIDADE
-================================= */
-
-/* Tablet */
+/* RESPONSIVIDADE */
 
 @media (max-width: 900px) {
     .categorias-lista {
@@ -609,12 +821,10 @@ footer small {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .cadastro form {
-        grid-template-columns: 1fr 1fr;
+    #formRestaurante {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
-
-/* Celular */
 
 @media (max-width: 600px) {
     .topo {
@@ -674,128 +884,14 @@ footer small {
         align-items: flex-start;
     }
 
-    .cadastro form {
+    #formRestaurante {
         grid-template-columns: 1fr;
     }
 
     .botao-cadastrar {
         grid-column: auto;
     }
-}
 
-/* ==============================
-   MODAL DE EDIÇÃO
-================================= */
-
-.modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.55);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.modal.aberto {
-    display: flex;
-}
-
-.modal-conteudo {
-    width: 100%;
-    max-width: 500px;
-    background: white;
-    border-radius: 20px;
-    padding: 30px;
-    position: relative;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
-}
-
-.modal-conteudo h2 {
-    margin-bottom: 8px;
-    color: #333;
-}
-
-.modal-conteudo > p {
-    color: #777;
-    margin-bottom: 25px;
-}
-
-.fechar-modal {
-    position: absolute;
-    top: 15px;
-    right: 18px;
-    border: none;
-    background: transparent;
-    font-size: 30px;
-    color: #777;
-    cursor: pointer;
-}
-
-.fechar-modal:hover {
-    color: #ff5a36;
-}
-
-#formEdicao {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-}
-
-#formEdicao .campo {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-#formEdicao input {
-    padding: 13px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 15px;
-}
-
-.botoes-modal {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.botao-cancelar,
-.botao-salvar {
-    flex: 1;
-    padding: 13px;
-    border: none;
-    border-radius: 9px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.botao-cancelar {
-    background: #eee;
-    color: #555;
-}
-
-.botao-cancelar:hover {
-    background: #ddd;
-}
-
-.botao-salvar {
-    background: #ff6b35;
-    color: white;
-}
-
-.botao-salvar:hover {
-    background: #e95425;
-}
-
-/* ==============================
-   MODAL NO CELULAR
-================================= */
-
-@media (max-width: 600px) {
     .modal {
         padding: 15px;
     }
@@ -804,7 +900,12 @@ footer small {
         padding: 25px 20px;
     }
 
-    .botoes-modal {
+    .botoes-modal,
+    .botoes-item-cardapio {
         flex-direction: column;
+    }
+
+    .modal-cardapio {
+        max-height: 90vh;
     }
 }

@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,10 +9,13 @@ datasource db {
 }
 
 model Restaurant {
-  id       Int      @id @default(autoincrement())
-  name     String
-  category String?
-  rating   Float?
+  id        Int        @id @default(autoincrement())
+  name      String
+  category  String?
+  rating    Float?
+  imageUrl  String?
+
+  menuItems MenuItem[]
 }
 
 model User {
@@ -19,4 +23,16 @@ model User {
   name     String
   email    String @unique
   password String
+}
+
+model MenuItem {
+  id           Int        @id @default(autoincrement())
+  name         String
+  description  String?
+  price        Float
+  category     String?
+  imageUrl     String?
+
+  restaurantId Int
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 }

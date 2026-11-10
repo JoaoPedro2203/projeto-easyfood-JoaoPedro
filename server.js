@@ -16,6 +16,32 @@ app.use(cors());
 app.use(express.json());
 
 // ==========================================
+// VALIDAR LINK DE IMAGEM
+// ==========================================
+
+function validarImagem(imageUrl) {
+  if (imageUrl === undefined || imageUrl === null || imageUrl === "") {
+    return true;
+  }
+
+  try {
+    const url = new URL(String(imageUrl));
+
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+function formatarImagem(imageUrl) {
+  if (!imageUrl) {
+    return null;
+  }
+
+  return String(imageUrl).trim();
+}
+
+// ==========================================
 // MIDDLEWARE DE AUTENTICAÇÃO JWT
 // ==========================================
 
@@ -49,7 +75,6 @@ function autenticarToken(req, res, next) {
     req.usuarioId = decoded.id;
 
     next();
-
   } catch (erro) {
     return res.status(401).json({
       mensagem: "Token inválido ou expirado!"
@@ -72,7 +97,11 @@ app.get("/", (req, res) => {
       "PUT /api/restaurantes/:id",
       "DELETE /api/restaurantes/:id",
       "POST /api/auth/cadastro",
-      "POST /api/auth/login"
+      "POST /api/auth/login",
+      "GET /api/restaurantes/:id/cardapio",
+      "POST /api/restaurantes/:id/cardapio",
+      "PUT /api/cardapio/:id",
+      "DELETE /api/cardapio/:id"
     ]
   });
 });
@@ -115,7 +144,7 @@ app.post("/api/auth/cadastro", async (req, res) => {
       }
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       mensagem: "Usuário cadastrado com sucesso!",
 
       usuario: {
@@ -124,7 +153,6 @@ app.post("/api/auth/cadastro", async (req, res) => {
         email: usuario.email
       }
     });
-
   } catch (erro) {
     if (erro.code === "P2002") {
       return res.status(409).json({
@@ -134,7 +162,7 @@ app.post("/api/auth/cadastro", async (req, res) => {
 
     console.error("Erro no cadastro:", erro.message);
 
-    res.status(500).json({
+    return res.status(500).json({
       erro: "Não foi possível cadastrar o usuário."
     });
   }
@@ -189,9 +217,8 @@ app.post("/api/auth/login", async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       mensagem: "Login realizado com sucesso!",
-
       token,
 
       usuario: {
@@ -200,11 +227,10 @@ app.post("/api/auth/login", async (req, res) => {
         email: usuario.email
       }
     });
-
   } catch (erro) {
     console.error("Erro no login:", erro.message);
 
-    res.status(500).json({
+    return res.status(500).json({
       erro: "Não foi possível realizar o login."
     });
   }
@@ -222,12 +248,11 @@ app.get("/api/restaurantes", autenticarToken, async (req, res) => {
       }
     });
 
-    res.status(200).json(restaurantes);
-
+    return res.status(200).json(restaurantes);
   } catch (erro) {
     console.error("Falha ao listar restaurantes:", erro.message);
 
-    res.status(500).json({
+    return res.status(500).json({
       erro: "Não foi possível consultar os restaurantes."
     });
   }
@@ -248,9 +273,7 @@ app.get("/api/restaurantes/:id", autenticarToken, async (req, res) => {
 
   try {
     const restaurante = await db.restaurant.findUnique({
-      where: {
-        id
-      }
+      where: { id }
     });
 
     if (!restaurante) {
@@ -259,12 +282,11 @@ app.get("/api/restaurantes/:id", autenticarToken, async (req, res) => {
       });
     }
 
-    res.status(200).json(restaurante);
-
+    return res.status(200).json(restaurante);
   } catch (erro) {
     console.error("Falha ao buscar restaurante:", erro.message);
 
-    res.status(500).json({
+    return res.status(500).json({
       erro: "Não foi possível consultar o restaurante."
     });
   }
@@ -275,7 +297,7 @@ app.get("/api/restaurantes/:id", autenticarToken, async (req, res) => {
 // ==========================================
 
 app.post("/api/restaurantes", autenticarToken, async (req, res) => {
-  const { name, category, rating } = req.body;
+  const { name, category, rating, imageUrl } = req.body;
 
   if (!name || !category) {
     return res.status(400).json({
@@ -284,9 +306,7 @@ app.post("/api/restaurantes", autenticarToken, async (req, res) => {
   }
 
   const nota =
-    rating === undefined ||
-    rating === null ||
-    rating === ""
+    rating === undefined || rating === null || rating === ""
       ? 0
       : Number(rating);
 
@@ -296,21 +316,27 @@ app.post("/api/restaurantes", autenticarToken, async (req, res) => {
     });
   }
 
+  if (!validarImagem(imageUrl)) {
+    return res.status(400).json({
+      erro: "Informe um link de imagem válido (HTTP ou HTTPS)."
+    });
+  }
+
   try {
     const restaurante = await db.restaurant.create({
       data: {
         name: String(name).trim(),
         category: String(category).trim(),
-        rating: nota
+        rating: nota,
+        imageUrl: formatarImagem(imageUrl)
       }
     });
 
-    res.status(201).json(restaurante);
-
+    return res.status(201).json(restaurante);
   } catch (erro) {
     console.error("Falha ao cadastrar restaurante:", erro.message);
 
-    res.status(500).json({
+    return res.status(500).json({
       erro: "Não foi possível cadastrar o restaurante."
     });
   }
@@ -323,7 +349,7 @@ app.post("/api/restaurantes", autenticarToken, async (req, res) => {
 app.put("/api/restaurantes/:id", autenticarToken, async (req, res) => {
   const id = Number(req.params.id);
 
-  const { name, category, rating } = req.body;
+  const { name, category, rating, imageUrl } = req.body;
 
   if (!Number.isInteger(id) || id <= 0) {
     return res.status(400).json({
@@ -338,9 +364,7 @@ app.put("/api/restaurantes/:id", autenticarToken, async (req, res) => {
   }
 
   const nota =
-    rating === undefined ||
-    rating === null ||
-    rating === ""
+    rating === undefined || rating === null || rating === ""
       ? 0
       : Number(rating);
 
@@ -350,21 +374,25 @@ app.put("/api/restaurantes/:id", autenticarToken, async (req, res) => {
     });
   }
 
+  if (!validarImagem(imageUrl)) {
+    return res.status(400).json({
+      erro: "Informe um link de imagem válido (HTTP ou HTTPS)."
+    });
+  }
+
   try {
     const restaurante = await db.restaurant.update({
-      where: {
-        id
-      },
+      where: { id },
 
       data: {
         name: String(name).trim(),
         category: String(category).trim(),
-        rating: nota
+        rating: nota,
+        imageUrl: formatarImagem(imageUrl)
       }
     });
 
-    res.status(200).json(restaurante);
-
+    return res.status(200).json(restaurante);
   } catch (erro) {
     if (erro.code === "P2025") {
       return res.status(404).json({
@@ -374,7 +402,7 @@ app.put("/api/restaurantes/:id", autenticarToken, async (req, res) => {
 
     console.error("Falha ao editar restaurante:", erro.message);
 
-    res.status(500).json({
+    return res.status(500).json({
       erro: "Não foi possível editar o restaurante."
     });
   }
@@ -395,15 +423,12 @@ app.delete("/api/restaurantes/:id", autenticarToken, async (req, res) => {
 
   try {
     await db.restaurant.delete({
-      where: {
-        id
-      }
+      where: { id }
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       mensagem: "Restaurante excluído com sucesso."
     });
-
   } catch (erro) {
     if (erro.code === "P2025") {
       return res.status(404).json({
@@ -413,8 +438,232 @@ app.delete("/api/restaurantes/:id", autenticarToken, async (req, res) => {
 
     console.error("Falha ao excluir restaurante:", erro.message);
 
-    res.status(500).json({
+    return res.status(500).json({
       erro: "Não foi possível excluir o restaurante."
+    });
+  }
+});
+
+// ==========================================
+// LISTAR CARDÁPIO DE UM RESTAURANTE
+// ==========================================
+
+app.get("/api/restaurantes/:id/cardapio", autenticarToken, async (req, res) => {
+  const restaurantId = Number(req.params.id);
+
+  if (!Number.isInteger(restaurantId) || restaurantId <= 0) {
+    return res.status(400).json({
+      erro: "O ID do restaurante é inválido."
+    });
+  }
+
+  try {
+    const restaurante = await db.restaurant.findUnique({
+      where: { id: restaurantId }
+    });
+
+    if (!restaurante) {
+      return res.status(404).json({
+        erro: "Restaurante não encontrado."
+      });
+    }
+
+    const itens = await db.menuItem.findMany({
+      where: { restaurantId },
+      orderBy: { name: "asc" }
+    });
+
+    return res.status(200).json(itens);
+  } catch (erro) {
+    console.error("Erro ao listar cardápio:", erro.message);
+
+    return res.status(500).json({
+      erro: "Não foi possível consultar o cardápio."
+    });
+  }
+});
+
+// ==========================================
+// CADASTRAR ITEM NO CARDÁPIO
+// ==========================================
+
+app.post("/api/restaurantes/:id/cardapio", autenticarToken, async (req, res) => {
+  const restaurantId = Number(req.params.id);
+
+  const { name, description, price, category, imageUrl } = req.body;
+
+  if (!Number.isInteger(restaurantId) || restaurantId <= 0) {
+    return res.status(400).json({
+      erro: "O ID do restaurante é inválido."
+    });
+  }
+
+  if (
+    !name ||
+    !String(name).trim() ||
+    price === undefined ||
+    price === null ||
+    price === ""
+  ) {
+    return res.status(400).json({
+      erro: "Nome e preço são obrigatórios."
+    });
+  }
+
+  const preco = Number(price);
+
+  if (!Number.isFinite(preco) || preco < 0) {
+    return res.status(400).json({
+      erro: "O preço deve ser um número igual ou maior que zero."
+    });
+  }
+
+  if (!validarImagem(imageUrl)) {
+    return res.status(400).json({
+      erro: "Informe um link de imagem válido (HTTP ou HTTPS)."
+    });
+  }
+
+  try {
+    const restaurante = await db.restaurant.findUnique({
+      where: { id: restaurantId }
+    });
+
+    if (!restaurante) {
+      return res.status(404).json({
+        erro: "Restaurante não encontrado."
+      });
+    }
+
+    const item = await db.menuItem.create({
+      data: {
+        name: String(name).trim(),
+        description: description ? String(description).trim() : null,
+        price: preco,
+        category: category ? String(category).trim() : null,
+        imageUrl: formatarImagem(imageUrl),
+        restaurantId
+      }
+    });
+
+    return res.status(201).json({
+      mensagem: "Item cadastrado no cardápio com sucesso!",
+      item
+    });
+  } catch (erro) {
+    console.error("Erro ao cadastrar item:", erro.message);
+
+    return res.status(500).json({
+      erro: "Não foi possível cadastrar o item."
+    });
+  }
+});
+
+// ==========================================
+// EDITAR ITEM DO CARDÁPIO
+// ==========================================
+
+app.put("/api/cardapio/:id", autenticarToken, async (req, res) => {
+  const id = Number(req.params.id);
+
+  const { name, description, price, category, imageUrl } = req.body;
+
+  if (!Number.isInteger(id) || id <= 0) {
+    return res.status(400).json({
+      erro: "O ID do item é inválido."
+    });
+  }
+
+  if (
+    !name ||
+    !String(name).trim() ||
+    price === undefined ||
+    price === null ||
+    price === ""
+  ) {
+    return res.status(400).json({
+      erro: "Nome e preço são obrigatórios."
+    });
+  }
+
+  const preco = Number(price);
+
+  if (!Number.isFinite(preco) || preco < 0) {
+    return res.status(400).json({
+      erro: "O preço deve ser um número igual ou maior que zero."
+    });
+  }
+
+  if (!validarImagem(imageUrl)) {
+    return res.status(400).json({
+      erro: "Informe um link de imagem válido (HTTP ou HTTPS)."
+    });
+  }
+
+  try {
+    const item = await db.menuItem.update({
+      where: { id },
+
+      data: {
+        name: String(name).trim(),
+        description: description ? String(description).trim() : null,
+        price: preco,
+        category: category ? String(category).trim() : null,
+        imageUrl: formatarImagem(imageUrl)
+      }
+    });
+
+    return res.status(200).json({
+      mensagem: "Item atualizado com sucesso!",
+      item
+    });
+  } catch (erro) {
+    if (erro.code === "P2025") {
+      return res.status(404).json({
+        erro: "Item não encontrado."
+      });
+    }
+
+    console.error("Erro ao editar item:", erro.message);
+
+    return res.status(500).json({
+      erro: "Não foi possível editar o item."
+    });
+  }
+});
+
+// ==========================================
+// EXCLUIR ITEM DO CARDÁPIO
+// ==========================================
+
+app.delete("/api/cardapio/:id", autenticarToken, async (req, res) => {
+  const id = Number(req.params.id);
+
+  if (!Number.isInteger(id) || id <= 0) {
+    return res.status(400).json({
+      erro: "O ID do item é inválido."
+    });
+  }
+
+  try {
+    await db.menuItem.delete({
+      where: { id }
+    });
+
+    return res.status(200).json({
+      mensagem: "Item excluído do cardápio com sucesso."
+    });
+  } catch (erro) {
+    if (erro.code === "P2025") {
+      return res.status(404).json({
+        erro: "Item não encontrado."
+      });
+    }
+
+    console.error("Erro ao excluir item:", erro.message);
+
+    return res.status(500).json({
+      erro: "Não foi possível excluir o item."
     });
   }
 });
