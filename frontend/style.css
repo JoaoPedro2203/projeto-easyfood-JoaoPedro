@@ -1,3 +1,4 @@
+
 /* ==============================
    CONFIGURAÇÕES GERAIS
 ================================= */
@@ -18,6 +19,9 @@ body {
     color: #333;
 }
 
+[hidden] {
+    display: none !important;
+}
 
 /* ==============================
    CABEÇALHO
@@ -57,6 +61,144 @@ nav a:hover {
     color: #ff5a36;
 }
 
+/* ==============================
+   ÁREA DO USUÁRIO
+================================= */
+
+#areaUsuario {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#nomeUsuario {
+    font-weight: bold;
+    color: #444;
+}
+
+#botaoSair {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    background: #ff6b35;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#botaoSair:hover {
+    background: #e95425;
+}
+
+/* ==============================
+   AUTENTICAÇÃO
+================================= */
+
+#areaAutenticacao {
+    width: 90%;
+    max-width: 450px;
+    margin: 60px auto;
+    padding: 35px;
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 18px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+#areaAutenticacao h1,
+#areaAutenticacao h2 {
+    color: #ff5a36;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+#areaAutenticacao p {
+    color: #777;
+    text-align: center;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+#formLogin,
+#formCadastroUsuario {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+#formLogin .campo,
+#formCadastroUsuario .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#formLogin label,
+#formCadastroUsuario label {
+    font-weight: bold;
+    color: #444;
+}
+
+#formLogin input,
+#formCadastroUsuario input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    transition: 0.2s;
+}
+
+#formLogin input:focus,
+#formCadastroUsuario input:focus {
+    border-color: #ff6b35;
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+#formLogin button,
+#formCadastroUsuario button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 9px;
+    background: #ff6b35;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#formLogin button:hover,
+#formCadastroUsuario button:hover {
+    background: #e95425;
+}
+
+#alternarAutenticacao {
+    display: block;
+    margin: 20px auto 0;
+    padding: 8px;
+    border: none;
+    background: transparent;
+    color: #ff5a36;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#alternarAutenticacao:hover {
+    text-decoration: underline;
+}
+
+#mensagemAutenticacao {
+    display: block;
+    margin-top: 15px;
+    text-align: center;
+    color: #d9534f;
+    font-size: 14px;
+}
 
 /* ==============================
    ÁREA PRINCIPAL
@@ -67,7 +209,6 @@ main {
     max-width: 1200px;
     margin: auto;
 }
-
 
 /* ==============================
    HERO
@@ -80,14 +221,7 @@ main {
     padding: 60px;
     display: flex;
     align-items: center;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ff6b35,
-            #ff8c42
-        );
-
+    background: linear-gradient(135deg, #ff6b35, #ff8c42);
     color: white;
 }
 
@@ -119,7 +253,6 @@ main {
     margin-bottom: 30px;
 }
 
-
 /* ==============================
    BARRA DE PESQUISA
 ================================= */
@@ -145,7 +278,6 @@ main {
     font-size: 16px;
 }
 
-
 /* ==============================
    TÍTULOS
 ================================= */
@@ -162,7 +294,6 @@ main {
 .titulo-secao p {
     color: #777;
 }
-
 
 /* ==============================
    CATEGORIAS
@@ -184,12 +315,10 @@ main {
     border-radius: 15px;
     padding: 20px 10px;
     cursor: pointer;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-
     transition: 0.2s;
 }
 
@@ -205,7 +334,6 @@ main {
     transform: translateY(-4px);
     border-color: #ff6b35;
 }
-
 
 /* ==============================
    RESTAURANTES
@@ -234,7 +362,6 @@ main {
     text-decoration: underline;
 }
 
-
 /* ==============================
    GRID DOS RESTAURANTES
 ================================= */
@@ -245,7 +372,6 @@ main {
     gap: 20px;
 }
 
-
 /* ==============================
    CARD DO RESTAURANTE
 ================================= */
@@ -255,19 +381,14 @@ main {
     border-radius: 18px;
     overflow: hidden;
     border: 1px solid #eee;
-
     transition: 0.25s;
-
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
 }
 
 .card-restaurante:hover {
     transform: translateY(-6px);
-
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.10);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
 }
-
 
 /* ==============================
    IMAGEM / EMOJI DO RESTAURANTE
@@ -275,18 +396,10 @@ main {
 
 .card-imagem {
     height: 160px;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
-    background:
-        linear-gradient(
-            135deg,
-            #fff0e8,
-            #fff8f3
-        );
-
+    background: linear-gradient(135deg, #fff0e8, #fff8f3);
     overflow: hidden;
 }
 
@@ -298,7 +411,6 @@ main {
 .card-restaurante:hover .emoji-restaurante {
     transform: scale(1.12);
 }
-
 
 /* ==============================
    CONTEÚDO DO CARD
@@ -320,7 +432,6 @@ main {
     font-size: 15px;
 }
 
-
 /* ==============================
    AVALIAÇÃO
 ================================= */
@@ -329,9 +440,7 @@ main {
     display: flex;
     align-items: center;
     gap: 5px;
-
     margin-bottom: 18px;
-
     font-size: 15px;
 }
 
@@ -344,27 +453,20 @@ main {
     font-size: 13px;
 }
 
-
 /* ==============================
    BOTÃO EXCLUIR
 ================================= */
 
 .botao-excluir {
     width: 100%;
-
     padding: 11px;
-
     border: none;
     border-radius: 9px;
-
     background: #ff6b35;
     color: white;
-
     cursor: pointer;
-
     font-size: 14px;
     font-weight: bold;
-
     transition: 0.2s;
 }
 
@@ -372,16 +474,36 @@ main {
     background: #e95425;
 }
 
+/* ==============================
+   BOTÃO EDITAR
+================================= */
+
+.botao-editar {
+    width: 100%;
+    padding: 11px;
+    margin-bottom: 8px;
+    border: none;
+    border-radius: 9px;
+    background: #444;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.botao-editar:hover {
+    background: #222;
+}
 
 /* ==============================
-   CADASTRO
+   CADASTRO DE RESTAURANTES
 ================================= */
 
 .cadastro {
     background: white;
     padding: 30px;
     margin: 30px 0 50px;
-
     border-radius: 18px;
     border: 1px solid #eee;
 }
@@ -404,10 +526,8 @@ form {
 
 .campo input {
     padding: 13px;
-
     border: 1px solid #ccc;
     border-radius: 8px;
-
     font-size: 15px;
     outline: none;
 }
@@ -418,25 +538,19 @@ form {
 
 .botao-cadastrar {
     grid-column: 1 / -1;
-
     padding: 14px;
-
     border: none;
     border-radius: 9px;
-
     background: #ff6b35;
     color: white;
-
     font-size: 16px;
     font-weight: bold;
-
     cursor: pointer;
 }
 
 .botao-cadastrar:hover {
     background: #e95425;
 }
-
 
 /* ==============================
    MENSAGENS
@@ -448,16 +562,12 @@ form {
 
 .mensagem-vazia {
     grid-column: 1 / -1;
-
     text-align: center;
     padding: 40px;
-
     background: white;
     border-radius: 15px;
-
     color: #777;
 }
-
 
 /* ==============================
    RODAPÉ
@@ -484,7 +594,6 @@ footer small {
     color: #888;
 }
 
-
 /* ==============================
    RESPONSIVIDADE
 ================================= */
@@ -492,7 +601,6 @@ footer small {
 /* Tablet */
 
 @media (max-width: 900px) {
-
     .categorias-lista {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -501,22 +609,40 @@ footer small {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    form {
+    .cadastro form {
         grid-template-columns: 1fr 1fr;
     }
 }
 
-
 /* Celular */
 
 @media (max-width: 600px) {
-
     .topo {
         padding: 15px 5%;
+        flex-wrap: wrap;
+        gap: 12px;
     }
 
     nav {
         display: none;
+    }
+
+    #areaUsuario {
+        gap: 8px;
+    }
+
+    #nomeUsuario {
+        font-size: 13px;
+    }
+
+    #botaoSair {
+        padding: 8px 12px;
+    }
+
+    #areaAutenticacao {
+        width: 92%;
+        margin: 35px auto;
+        padding: 25px 20px;
     }
 
     main {
@@ -548,7 +674,7 @@ footer small {
         align-items: flex-start;
     }
 
-    form {
+    .cadastro form {
         grid-template-columns: 1fr;
     }
 
@@ -563,19 +689,12 @@ footer small {
 
 .modal {
     display: none;
-
     position: fixed;
-
     inset: 0;
-
     background: rgba(0, 0, 0, 0.55);
-
     z-index: 1000;
-
     align-items: center;
-
     justify-content: center;
-
     padding: 20px;
 }
 
@@ -586,46 +705,31 @@ footer small {
 .modal-conteudo {
     width: 100%;
     max-width: 500px;
-
     background: white;
-
     border-radius: 20px;
-
     padding: 30px;
-
     position: relative;
-
-    box-shadow:
-        0 20px 50px
-        rgba(0, 0, 0, 0.25);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
 }
 
 .modal-conteudo h2 {
     margin-bottom: 8px;
-
     color: #333;
 }
 
 .modal-conteudo > p {
     color: #777;
-
     margin-bottom: 25px;
 }
 
 .fechar-modal {
     position: absolute;
-
     top: 15px;
     right: 18px;
-
     border: none;
-
     background: transparent;
-
     font-size: 30px;
-
     color: #777;
-
     cursor: pointer;
 }
 
@@ -635,40 +739,42 @@ footer small {
 
 #formEdicao {
     display: flex;
-
     flex-direction: column;
-
     gap: 18px;
+}
+
+#formEdicao .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#formEdicao input {
+    padding: 13px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
 }
 
 .botoes-modal {
     display: flex;
-
     gap: 10px;
-
     margin-top: 10px;
 }
 
 .botao-cancelar,
 .botao-salvar {
     flex: 1;
-
     padding: 13px;
-
     border: none;
-
     border-radius: 9px;
-
     cursor: pointer;
-
     font-weight: bold;
-
     font-size: 14px;
 }
 
 .botao-cancelar {
     background: #eee;
-
     color: #555;
 }
 
@@ -678,7 +784,6 @@ footer small {
 
 .botao-salvar {
     background: #ff6b35;
-
     color: white;
 }
 
@@ -691,7 +796,6 @@ footer small {
 ================================= */
 
 @media (max-width: 600px) {
-
     .modal {
         padding: 15px;
     }
@@ -703,5 +807,4 @@ footer small {
     .botoes-modal {
         flex-direction: column;
     }
-
 }

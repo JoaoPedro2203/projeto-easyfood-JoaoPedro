@@ -1,15 +1,352 @@
-const API_URL = "http://localhost:3000/api/restaurantes";
 
-const form = document.getElementById("formRestaurante");
+const API_URL = "http://localhost:3001/api/restaurantes";
+const AUTH_URL = "http://localhost:3001/api/auth";
+
+// ==========================================
+// ELEMENTOS HTML
+// ==========================================
+
+const formRestaurante = document.getElementById("formRestaurante");
 const lista = document.getElementById("listaRestaurantes");
 const pesquisa = document.getElementById("pesquisa");
 const mostrarTodos = document.getElementById("mostrarTodos");
+
 const botoesCategoria = document.querySelectorAll(".categoria");
 
+const areaAutenticacao = document.getElementById("areaAutenticacao");
+const conteudoProtegido = document.getElementById("conteudoProtegido");
+const areaUsuario = document.getElementById("areaUsuario");
+
+const nomeUsuario = document.getElementById("nomeUsuario");
+
+const formLogin = document.getElementById("formLogin");
+const formCadastroUsuario = document.getElementById("formCadastroUsuario");
+
+const alternarAutenticacao = document.getElementById("alternarAutenticacao");
+const botaoSair = document.getElementById("botaoSair");
+
+const tituloAutenticacao = document.getElementById("tituloAutenticacao");
+const mensagemAutenticacao = document.getElementById("mensagemAutenticacao");
+const textoAlternativo = document.getElementById("textoAlternativo");
+
+// ==========================================
+// VARIÁVEIS
+// ==========================================
+
 let restaurantes = [];
-
 let restauranteEditandoId = null;
+let modoCadastro = false;
 
+// ==========================================
+// AUTENTICAÇÃO
+// ==========================================
+
+// Obter token salvo
+function obterToken() {
+    return localStorage.getItem("easyfood_token");
+}
+
+// Cabeçalhos com autenticação
+function obterCabecalhoAutenticacao() {
+    return {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${obterToken()}`
+    };
+}
+
+// Mostrar a aplicação
+function mostrarAplicacao(usuario = null) {
+
+    areaAutenticacao.hidden = true;
+    conteudoProtegido.hidden = false;
+    areaUsuario.hidden = false;
+
+    nomeUsuario.textContent = usuario?.name || "Usuário";
+
+    carregarRestaurantes();
+}
+
+// Mostrar login
+function mostrarLogin() {
+
+    areaAutenticacao.hidden = false;
+    conteudoProtegido.hidden = true;
+    areaUsuario.hidden = true;
+
+    formLogin.hidden = false;
+    formCadastroUsuario.hidden = true;
+
+    modoCadastro = false;
+
+    tituloAutenticacao.textContent = "Entrar no EasyFood";
+
+    mensagemAutenticacao.textContent =
+        "Entre na sua conta para acessar os restaurantes.";
+
+    textoAlternativo.textContent = "Ainda não tem uma conta?";
+
+    alternarAutenticacao.textContent = "Criar conta";
+}
+
+// Sessão expirada
+function tratarSessaoExpirada() {
+
+    localStorage.removeItem("easyfood_token");
+    localStorage.removeItem("easyfood_usuario");
+
+    restaurantes = [];
+
+    mostrarLogin();
+
+    alert("Sua sessão expirou. Entre novamente.");
+}
+
+// ==========================================
+// CADASTRO DE USUÁRIO
+// ==========================================
+
+formCadastroUsuario.addEventListener("submit", async (evento) => {
+
+    evento.preventDefault();
+
+    const name = document
+        .getElementById("nomeUsuarioCadastro")
+        .value
+        .trim();
+
+    const email = document
+        .getElementById("emailCadastro")
+        .value
+        .trim();
+
+    const password = document
+        .getElementById("senhaCadastro")
+        .value;
+
+    try {
+
+        const resposta = await fetch(`${AUTH_URL}/cadastro`, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                name,
+                email,
+                password
+            })
+
+        });
+
+        const resultado = await resposta.json();
+
+        if (!resposta.ok) {
+
+            alert(
+                resultado.erro ||
+                resultado.mensagem ||
+                "Não foi possível criar a conta."
+            );
+
+            return;
+        }
+
+        alert("Conta criada com sucesso! Agora faça seu login. 💗");
+
+        formCadastroUsuario.reset();
+
+        alternarModoAutenticacao();
+
+    } catch (erro) {
+
+        console.error("Erro no cadastro:", erro);
+
+        alert("Não foi possível conectar ao servidor.");
+
+    }
+
+});
+
+// ==========================================
+// LOGIN
+// ==========================================
+
+formLogin.addEventListener("submit", async (evento) => {
+
+    evento.preventDefault();
+
+    const email = document
+        .getElementById("emailLogin")
+        .value
+        .trim();
+
+    const password = document
+        .getElementById("senhaLogin")
+        .value;
+
+    try {
+
+        const resposta = await fetch(`${AUTH_URL}/login`, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                email,
+                password
+            })
+
+        });
+
+        const resultado = await resposta.json();
+
+        if (!resposta.ok) {
+
+            alert(
+                resultado.erro ||
+                resultado.mensagem ||
+                "E-mail ou senha incorretos."
+            );
+
+            return;
+        }
+
+        if (!resultado.token) {
+
+            alert("O servidor não retornou o token de autenticação.");
+
+            return;
+        }
+
+        // Salvar token
+        localStorage.setItem(
+            "easyfood_token",
+            resultado.token
+        );
+
+        // Salvar usuário
+        if (resultado.usuario) {
+
+            localStorage.setItem(
+                "easyfood_usuario",
+                JSON.stringify(resultado.usuario)
+            );
+
+        }
+
+        formLogin.reset();
+
+        mostrarAplicacao(resultado.usuario);
+
+    } catch (erro) {
+
+        console.error("Erro no login:", erro);
+
+        alert("Não foi possível conectar ao servidor.");
+
+    }
+
+});
+
+// ==========================================
+// ALTERNAR LOGIN E CADASTRO
+// ==========================================
+
+function alternarModoAutenticacao() {
+
+    modoCadastro = !modoCadastro;
+
+    formLogin.hidden = modoCadastro;
+    formCadastroUsuario.hidden = !modoCadastro;
+
+    if (modoCadastro) {
+
+        tituloAutenticacao.textContent = "Criar sua conta";
+
+        mensagemAutenticacao.textContent =
+            "Cadastre-se para aproveitar o EasyFood.";
+
+        textoAlternativo.textContent = "Já tem uma conta?";
+
+        alternarAutenticacao.textContent = "Fazer login";
+
+    } else {
+
+        tituloAutenticacao.textContent = "Entrar no EasyFood";
+
+        mensagemAutenticacao.textContent =
+            "Entre na sua conta para acessar os restaurantes.";
+
+        textoAlternativo.textContent = "Ainda não tem uma conta?";
+
+        alternarAutenticacao.textContent = "Criar conta";
+
+    }
+
+}
+
+alternarAutenticacao.addEventListener(
+    "click",
+    alternarModoAutenticacao
+);
+
+// ==========================================
+// SAIR DA CONTA
+// ==========================================
+
+botaoSair.addEventListener("click", () => {
+
+    localStorage.removeItem("easyfood_token");
+    localStorage.removeItem("easyfood_usuario");
+
+    restaurantes = [];
+
+    mostrarLogin();
+
+    alert("Você saiu da sua conta.");
+
+});
+
+// ==========================================
+// VERIFICAR SESSÃO
+// ==========================================
+
+function verificarSessao() {
+
+    const token = obterToken();
+
+    if (!token) {
+
+        mostrarLogin();
+
+        return;
+    }
+
+    let usuario = null;
+
+    try {
+
+        const usuarioSalvo = localStorage.getItem("easyfood_usuario");
+
+        usuario = usuarioSalvo
+            ? JSON.parse(usuarioSalvo)
+            : null;
+
+    } catch {
+
+        usuario = null;
+
+    }
+
+    mostrarAplicacao(usuario);
+
+}
 
 // ==========================================
 // NORMALIZAR TEXTO
@@ -17,7 +354,7 @@ let restauranteEditandoId = null;
 
 function normalizarTexto(texto) {
 
-    return texto
+    return String(texto || "")
         .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
@@ -25,26 +362,41 @@ function normalizarTexto(texto) {
 
 }
 
-
 // ==========================================
-// CARREGAR RESTAURANTES DA API
+// CARREGAR RESTAURANTES
 // ==========================================
 
 async function carregarRestaurantes() {
 
     try {
 
-        const resposta = await fetch(API_URL);
+        const resposta = await fetch(API_URL, {
+
+            headers: obterCabecalhoAutenticacao()
+
+        });
+
+        if (
+            resposta.status === 401 ||
+            resposta.status === 403
+        ) {
+
+            tratarSessaoExpirada();
+
+            return;
+        }
+
+        const resultado = await resposta.json();
 
         if (!resposta.ok) {
 
             throw new Error(
-                "Erro ao consultar a API."
+                resultado.erro || "Erro ao consultar a API."
             );
 
         }
 
-        restaurantes = await resposta.json();
+        restaurantes = resultado;
 
         mostrarRestaurantes(restaurantes);
 
@@ -67,7 +419,6 @@ async function carregarRestaurantes() {
 
 }
 
-
 // ==========================================
 // MOSTRAR RESTAURANTES
 // ==========================================
@@ -75,7 +426,6 @@ async function carregarRestaurantes() {
 function mostrarRestaurantes(listaRestaurantes) {
 
     lista.innerHTML = "";
-
 
     if (listaRestaurantes.length === 0) {
 
@@ -86,26 +436,15 @@ function mostrarRestaurantes(listaRestaurantes) {
         `;
 
         return;
-
     }
-
 
     listaRestaurantes.forEach((restaurante) => {
 
-        const card =
-            document.createElement("div");
+        const card = document.createElement("div");
 
+        card.classList.add("card-restaurante");
 
-        card.classList.add(
-            "card-restaurante"
-        );
-
-
-        const emoji =
-            escolherEmoji(
-                restaurante.category
-            );
-
+        const emoji = escolherEmoji(restaurante.category);
 
         card.innerHTML = `
 
@@ -117,29 +456,22 @@ function mostrarRestaurantes(listaRestaurantes) {
 
             </div>
 
-
             <div class="card-conteudo">
 
                 <h3>
                     ${restaurante.name}
                 </h3>
 
-
                 <p class="card-categoria">
-                    ${restaurante.category}
+                    ${restaurante.category || "Sem categoria"}
                 </p>
-
 
                 <div class="card-avaliacao">
 
-                    <span>
-                        ⭐
-                    </span>
+                    <span>⭐</span>
 
                     <strong>
-                        ${Number(
-                            restaurante.rating
-                        ).toFixed(1)}
+                        ${Number(restaurante.rating || 0).toFixed(1)}
                     </strong>
 
                     <span class="avaliacao-texto">
@@ -148,19 +480,19 @@ function mostrarRestaurantes(listaRestaurantes) {
 
                 </div>
 
-
                 <div class="botoes-restaurante">
 
                     <button
                         class="botao-editar"
+                        type="button"
                         onclick="editarRestaurante(${restaurante.id})"
                     >
                         ✏️ Editar
                     </button>
 
-
                     <button
                         class="botao-excluir"
+                        type="button"
                         onclick="excluirRestaurante(${restaurante.id})"
                     >
                         🗑️ Excluir
@@ -172,13 +504,11 @@ function mostrarRestaurantes(listaRestaurantes) {
 
         `;
 
-
         lista.appendChild(card);
 
     });
 
 }
-
 
 // ==========================================
 // ESCOLHER EMOJI
@@ -189,558 +519,267 @@ function escolherEmoji(categoria) {
     const categoriaNormalizada =
         normalizarTexto(categoria);
 
-
-    if (
-        categoriaNormalizada.includes("pizza")
-    ) {
-
+    if (categoriaNormalizada.includes("pizza")) {
         return "🍕";
-
     }
-
 
     if (
         categoriaNormalizada.includes("hamburg") ||
         categoriaNormalizada.includes("burger")
     ) {
-
         return "🍔";
-
     }
-
 
     if (
         categoriaNormalizada.includes("japones") ||
-        categoriaNormalizada.includes("japonesa") ||
         categoriaNormalizada.includes("sushi")
     ) {
-
         return "🍣";
-
     }
 
-
-    if (
-        categoriaNormalizada.includes("acai")
-    ) {
-
+    if (categoriaNormalizada.includes("acai")) {
         return "🍧";
-
     }
-
 
     if (
         categoriaNormalizada.includes("sobremesa") ||
         categoriaNormalizada.includes("doce")
     ) {
-
         return "🍰";
-
     }
-
 
     if (
         categoriaNormalizada.includes("bebida") ||
         categoriaNormalizada.includes("cafe")
     ) {
-
         return "🥤";
-
     }
-
 
     return "🍽️";
 
 }
 
-
 // ==========================================
 // PESQUISAR
 // ==========================================
 
-pesquisa.addEventListener(
-    "input",
-    () => {
+pesquisa.addEventListener("input", () => {
 
-        const texto =
-            normalizarTexto(
-                pesquisa.value
-            );
+    const texto = normalizarTexto(pesquisa.value);
 
+    const resultados = restaurantes.filter((restaurante) => {
 
-        const resultados =
-            restaurantes.filter(
-                (restaurante) => {
+        const nome = normalizarTexto(restaurante.name);
 
-                    const nome =
-                        normalizarTexto(
-                            restaurante.name
-                        );
+        const categoria = normalizarTexto(restaurante.category);
 
-
-                    const categoria =
-                        normalizarTexto(
-                            restaurante.category
-                        );
-
-
-                    return (
-                        nome.includes(texto) ||
-                        categoria.includes(texto)
-                    );
-
-                }
-            );
-
-
-        mostrarRestaurantes(
-            resultados
+        return (
+            nome.includes(texto) ||
+            categoria.includes(texto)
         );
 
-    }
-);
+    });
 
+    mostrarRestaurantes(resultados);
+
+});
 
 // ==========================================
 // FILTRAR CATEGORIAS
 // ==========================================
 
-botoesCategoria.forEach(
-    (botao) => {
+botoesCategoria.forEach((botao) => {
 
-        botao.addEventListener(
-            "click",
-            () => {
+    botao.addEventListener("click", () => {
 
-                botoesCategoria.forEach(
-                    (item) => {
+        botoesCategoria.forEach((item) => {
 
-                        item.classList.remove(
-                            "ativa"
-                        );
+            item.classList.remove("ativa");
 
-                    }
-                );
+        });
 
+        botao.classList.add("ativa");
 
-                botao.classList.add(
-                    "ativa"
-                );
+        const categoriaSelecionada =
+            normalizarTexto(botao.dataset.categoria);
 
+        const resultados = restaurantes.filter((restaurante) => {
 
-                const categoriaSelecionada =
-                    normalizarTexto(
-                        botao.dataset.categoria
-                    );
+            const categoria =
+                normalizarTexto(restaurante.category);
 
+            if (categoriaSelecionada === "japonesa") {
 
-                const resultados =
-                    restaurantes.filter(
-                        (restaurante) => {
-
-                            const categoria =
-                                normalizarTexto(
-                                    restaurante.category
-                                );
-
-
-                            if (
-                                categoriaSelecionada === "japonesa" ||
-                                categoriaSelecionada === "japones"
-                            ) {
-
-                                return (
-                                    categoria.includes("japones") ||
-                                    categoria.includes("japonesa") ||
-                                    categoria.includes("sushi")
-                                );
-
-                            }
-
-
-                            return categoria.includes(
-                                categoriaSelecionada
-                            );
-
-                        }
-                    );
-
-
-                mostrarRestaurantes(
-                    resultados
+                return (
+                    categoria.includes("japones") ||
+                    categoria.includes("sushi")
                 );
 
             }
-        );
 
-    }
-);
+            return categoria.includes(categoriaSelecionada);
 
+        });
+
+        mostrarRestaurantes(resultados);
+
+    });
+
+});
 
 // ==========================================
 // MOSTRAR TODOS
 // ==========================================
 
-mostrarTodos.addEventListener(
-    "click",
-    () => {
+mostrarTodos.addEventListener("click", () => {
 
-        pesquisa.value = "";
+    pesquisa.value = "";
 
+    botoesCategoria.forEach((botao) => {
 
-        botoesCategoria.forEach(
-            (botao) => {
+        botao.classList.remove("ativa");
 
-                botao.classList.remove(
-                    "ativa"
-                );
+    });
 
-            }
-        );
+    mostrarRestaurantes(restaurantes);
 
+});
 
-        mostrarRestaurantes(
-            restaurantes
-        );
+// ==========================================
+// CADASTRAR RESTAURANTE
+// ==========================================
 
+formRestaurante.addEventListener("submit", async (evento) => {
+
+    evento.preventDefault();
+
+    const nome = document
+        .getElementById("nome")
+        .value
+        .trim();
+
+    const categoria = document
+        .getElementById("categoria")
+        .value
+        .trim();
+
+    const avaliacao = Number(
+        document.getElementById("avaliacao").value || 0
+    );
+
+    if (!nome || !categoria) {
+
+        alert("Nome e categoria são obrigatórios.");
+
+        return;
     }
-);
 
+    if (
+        !Number.isFinite(avaliacao) ||
+        avaliacao < 0 ||
+        avaliacao > 5
+    ) {
 
-// ==========================================
-// CADASTRAR
-// ==========================================
+        alert("A avaliação deve ser um número entre 0 e 5.");
 
-form.addEventListener(
-    "submit",
-    async (evento) => {
+        return;
+    }
 
-        evento.preventDefault();
+    try {
 
+        const resposta = await fetch(API_URL, {
 
-        const nome =
-            document
-                .getElementById("nome")
-                .value
-                .trim();
+            method: "POST",
 
+            headers: obterCabecalhoAutenticacao(),
 
-        const categoria =
-            document
-                .getElementById("categoria")
-                .value
-                .trim();
+            body: JSON.stringify({
 
+                name: nome,
 
-        const avaliacao =
-            document
-                .getElementById("avaliacao")
-                .value;
+                category: categoria,
 
+                rating: avaliacao
 
-        try {
+            })
 
-            const resposta =
-                await fetch(
-                    API_URL,
-                    {
+        });
 
-                        method: "POST",
+        const resultado = await resposta.json();
 
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
+        if (
+            resposta.status === 401 ||
+            resposta.status === 403
+        ) {
 
-                        body: JSON.stringify({
+            tratarSessaoExpirada();
 
-                            name: nome,
+            return;
+        }
 
-                            category: categoria,
-
-                            rating: avaliacao
-
-                        })
-
-                    }
-                );
-
-
-            const resultado =
-                await resposta.json();
-
-
-            if (!resposta.ok) {
-
-                alert(
-                    resultado.erro
-                );
-
-                return;
-
-            }
-
+        if (!resposta.ok) {
 
             alert(
-                "Restaurante cadastrado com sucesso! 🍔"
-            );
-
-
-            form.reset();
-
-
-            await carregarRestaurantes();
-
-
-            document
-                .getElementById(
-                    "restaurantes"
-                )
-                .scrollIntoView({
-                    behavior: "smooth"
-                });
-
-        } catch (erro) {
-
-            console.error(
-                "Erro ao cadastrar:",
-                erro
-            );
-
-
-            alert(
+                resultado.erro ||
                 "Não foi possível cadastrar o restaurante."
             );
 
+            return;
         }
+
+        alert("Restaurante cadastrado com sucesso! 🍔");
+
+        formRestaurante.reset();
+
+        await carregarRestaurantes();
+
+        document
+            .getElementById("restaurantes")
+            .scrollIntoView({
+                behavior: "smooth"
+            });
+
+    } catch (erro) {
+
+        console.error("Erro ao cadastrar:", erro);
+
+        alert("Não foi possível cadastrar o restaurante.");
 
     }
-);
 
-
-// ==========================================
-// CRIAR MODAL DE EDIÇÃO
-// ==========================================
-
-function criarModalEdicao() {
-
-    const modal =
-        document.createElement("div");
-
-
-    modal.id = "modalEdicao";
-
-
-    modal.classList.add(
-        "modal"
-    );
-
-
-    modal.innerHTML = `
-
-        <div class="modal-conteudo">
-
-            <button
-                id="fecharModal"
-                class="fechar-modal"
-                type="button"
-            >
-                ×
-            </button>
-
-
-            <h2>
-                ✏️ Editar restaurante
-            </h2>
-
-
-            <p>
-                Altere as informações do restaurante.
-            </p>
-
-
-            <form id="formEdicao">
-
-                <div class="campo">
-
-                    <label for="editarNome">
-                        Nome do restaurante
-                    </label>
-
-                    <input
-                        type="text"
-                        id="editarNome"
-                        required
-                    >
-
-                </div>
-
-
-                <div class="campo">
-
-                    <label for="editarCategoria">
-                        Categoria
-                    </label>
-
-                    <input
-                        type="text"
-                        id="editarCategoria"
-                        required
-                    >
-
-                </div>
-
-
-                <div class="campo">
-
-                    <label for="editarAvaliacao">
-                        Avaliação
-                    </label>
-
-                    <input
-                        type="number"
-                        id="editarAvaliacao"
-                        min="0"
-                        max="5"
-                        step="0.1"
-                        required
-                    >
-
-                </div>
-
-
-                <div class="botoes-modal">
-
-                    <button
-                        type="button"
-                        id="cancelarEdicao"
-                        class="botao-cancelar"
-                    >
-                        Cancelar
-                    </button>
-
-
-                    <button
-                        type="submit"
-                        class="botao-salvar"
-                    >
-                        💾 Salvar alterações
-                    </button>
-
-                </div>
-
-            </form>
-
-        </div>
-
-    `;
-
-
-    document.body.appendChild(
-        modal
-    );
-
-
-    document
-        .getElementById("fecharModal")
-        .addEventListener(
-            "click",
-            fecharModal
-        );
-
-
-    document
-        .getElementById("cancelarEdicao")
-        .addEventListener(
-            "click",
-            fecharModal
-        );
-
-
-    document
-        .getElementById("formEdicao")
-        .addEventListener(
-            "submit",
-            salvarEdicao
-        );
-
-
-    modal.addEventListener(
-        "click",
-        (evento) => {
-
-            if (
-                evento.target === modal
-            ) {
-
-                fecharModal();
-
-            }
-
-        }
-    );
-
-}
-
+});
 
 // ==========================================
-// ABRIR MODAL
+// EDITAR RESTAURANTE
 // ==========================================
 
 function editarRestaurante(id) {
 
-    const restaurante =
-        restaurantes.find(
-            (item) =>
-                item.id === id
-        );
-
+    const restaurante = restaurantes.find(
+        (item) => item.id === id
+    );
 
     if (!restaurante) {
 
-        alert(
-            "Restaurante não encontrado."
-        );
+        alert("Restaurante não encontrado.");
 
         return;
-
     }
 
+    restauranteEditandoId = id;
 
-    restauranteEditandoId =
-        id;
-
-
-    document
-        .getElementById("editarNome")
-        .value =
+    document.getElementById("editarNome").value =
         restaurante.name;
 
+    document.getElementById("editarCategoria").value =
+        restaurante.category || "";
 
-    document
-        .getElementById("editarCategoria")
-        .value =
-        restaurante.category;
+    document.getElementById("editarAvaliacao").value =
+        restaurante.rating ?? 0;
 
-
-    document
-        .getElementById("editarAvaliacao")
-        .value =
-        restaurante.rating;
-
-
-    const modal =
-        document.getElementById(
-            "modalEdicao"
-        );
-
-
-    modal.classList.add(
-        "aberto"
-    );
+    document.getElementById("modalEdicao").style.display = "flex";
 
 }
-
 
 // ==========================================
 // FECHAR MODAL
@@ -748,107 +787,75 @@ function editarRestaurante(id) {
 
 function fecharModal() {
 
-    const modal =
-        document.getElementById(
-            "modalEdicao"
-        );
+    document.getElementById("modalEdicao").style.display = "none";
 
-
-    modal.classList.remove(
-        "aberto"
-    );
-
-
-    restauranteEditandoId =
-        null;
+    restauranteEditandoId = null;
 
 }
 
+document
+    .getElementById("fecharModal")
+    .addEventListener("click", fecharModal);
+
+document
+    .getElementById("cancelarEdicao")
+    .addEventListener("click", fecharModal);
 
 // ==========================================
 // SALVAR EDIÇÃO
 // ==========================================
 
-async function salvarEdicao(evento) {
+document
+    .getElementById("formEdicao")
+    .addEventListener("submit", async (evento) => {
 
-    evento.preventDefault();
+        evento.preventDefault();
 
+        if (restauranteEditandoId === null) {
+            return;
+        }
 
-    if (
-        restauranteEditandoId === null
-    ) {
-
-        return;
-
-    }
-
-
-    const nome =
-        document
+        const nome = document
             .getElementById("editarNome")
             .value
             .trim();
 
-
-    const categoria =
-        document
+        const categoria = document
             .getElementById("editarCategoria")
             .value
             .trim();
 
-
-    const avaliacao =
-        document
-            .getElementById("editarAvaliacao")
-            .value;
-
-
-    const nota =
-        Number(avaliacao);
-
-
-    if (
-        !nome ||
-        !categoria
-    ) {
-
-        alert(
-            "Nome e categoria são obrigatórios."
+        const avaliacao = Number(
+            document.getElementById("editarAvaliacao").value
         );
 
-        return;
+        if (!nome || !categoria) {
 
-    }
+            alert("Nome e categoria são obrigatórios.");
 
+            return;
+        }
 
-    if (
-        !Number.isFinite(nota) ||
-        nota < 0 ||
-        nota > 5
-    ) {
+        if (
+            !Number.isFinite(avaliacao) ||
+            avaliacao < 0 ||
+            avaliacao > 5
+        ) {
 
-        alert(
-            "A avaliação deve ser um número entre 0 e 5."
-        );
+            alert("A avaliação deve ser um número entre 0 e 5.");
 
-        return;
+            return;
+        }
 
-    }
+        try {
 
-
-    try {
-
-        const resposta =
-            await fetch(
+            const resposta = await fetch(
                 `${API_URL}/${restauranteEditandoId}`,
                 {
 
                     method: "PUT",
 
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
+                    headers: obterCabecalhoAutenticacao(),
 
                     body: JSON.stringify({
 
@@ -856,129 +863,116 @@ async function salvarEdicao(evento) {
 
                         category: categoria,
 
-                        rating: nota
+                        rating: avaliacao
 
                     })
 
                 }
             );
 
+            const resultado = await resposta.json();
 
-        const resultado =
-            await resposta.json();
+            if (
+                resposta.status === 401 ||
+                resposta.status === 403
+            ) {
 
+                tratarSessaoExpirada();
 
-        if (!resposta.ok) {
+                return;
+            }
 
-            alert(
-                resultado.erro
-            );
+            if (!resposta.ok) {
 
-            return;
+                alert(
+                    resultado.erro ||
+                    "Não foi possível editar o restaurante."
+                );
+
+                return;
+            }
+
+            fecharModal();
+
+            alert("Restaurante atualizado com sucesso! ✏️");
+
+            await carregarRestaurantes();
+
+        } catch (erro) {
+
+            console.error("Erro ao editar:", erro);
+
+            alert("Não foi possível editar o restaurante.");
 
         }
 
-
-        fecharModal();
-
-
-        alert(
-            "Restaurante atualizado com sucesso! ✏️"
-        );
-
-
-        await carregarRestaurantes();
-
-    } catch (erro) {
-
-        console.error(
-            "Erro ao editar:",
-            erro
-        );
-
-
-        alert(
-            "Não foi possível editar o restaurante."
-        );
-
-    }
-
-}
-
+    });
 
 // ==========================================
-// EXCLUIR
+// EXCLUIR RESTAURANTE
 // ==========================================
 
 async function excluirRestaurante(id) {
 
-    const confirmar =
-        confirm(
-            "Deseja realmente excluir este restaurante?"
-        );
-
+    const confirmar = confirm(
+        "Deseja realmente excluir este restaurante?"
+    );
 
     if (!confirmar) {
-
         return;
-
     }
-
 
     try {
 
-        const resposta =
-            await fetch(
-                `${API_URL}/${id}`,
-                {
-                    method: "DELETE"
-                }
-            );
+        const resposta = await fetch(
+            `${API_URL}/${id}`,
+            {
 
+                method: "DELETE",
 
-        const resultado =
-            await resposta.json();
+                headers: obterCabecalhoAutenticacao()
 
+            }
+        );
+
+        const resultado = await resposta.json();
+
+        if (
+            resposta.status === 401 ||
+            resposta.status === 403
+        ) {
+
+            tratarSessaoExpirada();
+
+            return;
+        }
 
         if (!resposta.ok) {
 
             alert(
-                resultado.erro
+                resultado.erro ||
+                "Não foi possível excluir o restaurante."
             );
 
             return;
-
         }
 
-
-        alert(
-            "Restaurante excluído com sucesso! 🗑️"
-        );
-
+        alert("Restaurante excluído com sucesso! 🗑️");
 
         await carregarRestaurantes();
 
     } catch (erro) {
 
-        console.error(
-            "Erro ao excluir:",
-            erro
-        );
+        console.error("Erro ao excluir:", erro);
 
-
-        alert(
-            "Não foi possível excluir o restaurante."
-        );
+        alert("Não foi possível excluir o restaurante.");
 
     }
 
 }
 
-
 // ==========================================
-// INICIAR
+// INICIAR A APLICAÇÃO
 // ==========================================
 
-criarModalEdicao();
-
-carregarRestaurantes();
+verificarSessao();

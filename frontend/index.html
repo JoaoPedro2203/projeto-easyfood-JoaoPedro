@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -25,18 +26,172 @@
             <a href="#cadastro">Cadastrar</a>
         </nav>
 
+        <!-- Área do usuário -->
+        <div id="areaUsuario" hidden>
+            <span id="nomeUsuario"></span>
+
+            <button type="button" id="botaoSair">
+                Sair
+            </button>
+        </div>
+
     </header>
 
 
-    <!-- Conteúdo principal -->
-    <main>
+    <!-- ========================================== -->
+    <!-- AUTENTICAÇÃO -->
+    <!-- ========================================== -->
+
+    <section id="areaAutenticacao" class="cadastro">
+
+        <div class="titulo-secao">
+
+            <h2 id="tituloAutenticacao">
+                Entrar no EasyFood
+            </h2>
+
+            <p id="mensagemAutenticacao">
+                Entre na sua conta para acessar os restaurantes.
+            </p>
+
+        </div>
+
+
+        <!-- Formulário de login -->
+        <form id="formLogin">
+
+            <div class="campo">
+
+                <label for="emailLogin">
+                    E-mail
+                </label>
+
+                <input
+                    type="email"
+                    id="emailLogin"
+                    placeholder="Digite seu e-mail"
+                    required
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="senhaLogin">
+                    Senha
+                </label>
+
+                <input
+                    type="password"
+                    id="senhaLogin"
+                    placeholder="Digite sua senha"
+                    required
+                >
+
+            </div>
+
+
+            <button type="submit" class="botao-cadastrar">
+                Entrar
+            </button>
+
+        </form>
+
+
+        <!-- Formulário de cadastro de usuário -->
+        <form id="formCadastroUsuario" hidden>
+
+            <div class="campo">
+
+                <label for="nomeUsuarioCadastro">
+                    Nome
+                </label>
+
+                <input
+                    type="text"
+                    id="nomeUsuarioCadastro"
+                    placeholder="Digite seu nome"
+                    required
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="emailCadastro">
+                    E-mail
+                </label>
+
+                <input
+                    type="email"
+                    id="emailCadastro"
+                    placeholder="Digite seu e-mail"
+                    required
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="senhaCadastro">
+                    Senha
+                </label>
+
+                <input
+                    type="password"
+                    id="senhaCadastro"
+                    placeholder="Mínimo de 8 caracteres"
+                    minlength="8"
+                    required
+                >
+
+            </div>
+
+
+            <button type="submit" class="botao-cadastrar">
+                Criar conta
+            </button>
+
+        </form>
+
+
+        <!-- Alternar login e cadastro -->
+        <p>
+
+            <span id="textoAlternativo">
+                Ainda não tem uma conta?
+            </span>
+
+            <button
+                type="button"
+                id="alternarAutenticacao"
+            >
+                Criar conta
+            </button>
+
+        </p>
+
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- CONTEÚDO PROTEGIDO -->
+    <!-- ========================================== -->
+
+    <main id="conteudoProtegido" hidden>
+
 
         <!-- Apresentação -->
         <section id="inicio" class="hero">
 
             <div class="hero-texto">
 
-                <span class="tag">🍴 Comida perto de você</span>
+                <span class="tag">
+                    🍴 Comida perto de você
+                </span>
 
                 <h1>
                     Encontre seu próximo
@@ -47,6 +202,7 @@
                     Descubra restaurantes, veja avaliações
                     e encontre opções deliciosas no EasyFood.
                 </p>
+
 
                 <!-- Pesquisa -->
                 <div class="barra-pesquisa">
@@ -71,7 +227,9 @@
 
             <div class="titulo-secao">
 
-                <h2>O que você quer comer?</h2>
+                <h2>
+                    O que você quer comer?
+                </h2>
 
                 <p>
                     Escolha uma categoria
@@ -177,10 +335,7 @@
             </div>
 
 
-            <!--
-                Os cards dos restaurantes
-                serão criados pelo script.js
-            -->
+            <!-- Cards dos restaurantes -->
             <div
                 id="listaRestaurantes"
                 class="grid-restaurantes"
@@ -195,7 +350,7 @@
         </section>
 
 
-        <!-- Cadastro -->
+        <!-- Cadastro de restaurantes -->
         <section
             id="cadastro"
             class="cadastro"
@@ -280,9 +435,9 @@
     </main>
 
 
-    <!-- ==========================================
-         MODAL DE EDIÇÃO
-    =========================================== -->
+    <!-- ========================================== -->
+    <!-- MODAL DE EDIÇÃO -->
+    <!-- ========================================== -->
 
     <div
         id="modalEdicao"
@@ -415,4 +570,4 @@
 
 </body>
 
-</html>.
+</html>
